@@ -16,12 +16,30 @@ func main(){
 		return
 	}
 
-	_,err = connect(cfg.Database)
+	db,err := connect(cfg.Database)
 	if err != nil {
 		log.Println(err)
 		return
 	}
+
+//database.InsertCustomer(database.Customer{
+	//	FirstName:"Zafira",
+	//	LastName:"Nur Sabila",
+	//	NpwpId:"id-16",
+	//	Age:20,
+	//	CustomerType:"Premium",
+	//	Street:"Str",
+	//	City:"Bekasi",
+	//	State:"Indo",
+	//	ZipCode:"55555",
+	//	PhoneNumber:"0812345",
+	//},db)
+
+	//database.GetCustomers(db)
+	database.DeleteCustomer(16,db)
+	database.UpdateCustomer(30,16,db)
 }
+
 
 func getConfig() (config.Config, error) {
 	viper.AddConfigPath(".")
