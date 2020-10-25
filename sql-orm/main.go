@@ -2,26 +2,49 @@ package main
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/FadhlanHawali/Digitalent-Kominfo_Introduction-Database-1/sql-generic/config"
+	"github.com/FadhlanHawali/Digitalent-Kominfo_Introduction-Database-1/sql-orm/database"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"log"
 )
 
-func main(){
-	cfg,err := getConfig()
+func main() {
+	cfg, err := getConfig()
 	if err != nil {
 		log.Println(err)
 		return
 	}
 
-	_,err = initDB(cfg.Database)
+	_, err = initDB(cfg.Database)
 	if err != nil {
 		log.Println(err)
 		return
 	}
+	//
+	//database.InsertCustomer(database.CustomerORM{
+	//	FirstName:"Zafira",
+	//	LastName:"Nur Sabila",
+	//	NpwpId:"id-16",
+	//	Age:20,
+	//	CustomerType:"Premium",
+	//	Street:"Str",
+	//	City:"Bekasi",
+	//	State:"Indo",
+	//	ZipCode:"55555",
+	//	PhoneNumber:"0812345",
+	//},db)
+	//database.GetCustomers(db)
+	//database.DeleteCustomer(16,db)
+	//database.UpdateCustomer(database.CustomerORM{PhoneNumber: "0812345"},2,db)
+	//
+	//database.InsertAccount(database.AccountORM{
+	//	Balance:         10000,
+	//	AccountType:     "Deposit",
+	//},2,db)
 }
 
 func getConfig() (config.Config, error) {
@@ -48,6 +71,11 @@ func initDB(dbConfig config.Database) (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	db.AutoMigrate(
+		&database.CustomerORM{},
+		&database.AccountORM{},
+	)
 
 	log.Println("db successfully connected")
 
